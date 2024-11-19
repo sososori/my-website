@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll Animation with Background</title>
+  <style>
+    /* 기본 스타일 */
+    body {
+      margin: 0;
+      font-family: "Times New Roman", serif; /* 폰트 설정 */
+      height: 200vh; /* 충분히 긴 페이지 */
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* 기본적으로 위로 정렬 */
+      background-color: #f9f9f9; /* 배경 색 */
+      
+      /* 배경 이미지 설정 */
+      background-image: url('포트폴리오/background100.jpeg'); /* 배경 이미지 추가 */
+      background-size: cover; /* 배경 이미지가 화면을 덮도록 설정 */
+      background-position: center center; /* 배경 이미지를 화면 중앙에 위치 */
+      background-repeat: no-repeat; /* 배경 이미지가 반복되지 않도록 설정 */
+      background-attachment: fixed; /* 스크롤시 배경 이미지 고정 */
+      overflow-x: hidden; /* 수평 스크롤 방지 */
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      padding-top: 50px; /* 문장을 위로 올리기 위해 padding-top 추가 */
+    }
+
+    /* 텍스트 스타일 */
+    .text {
+      font-weight: 800;
+      font-size: 160pt; /* 텍스트 크기 160pt */
+      line-height: 1;
+      color: #000;
+      margin: 0;
+      display: inline-block;
+      transform-style: preserve-3d;
+    }
+
+    /* 개별 span 스타일 */
+    .text span {
+      display: inline-block;
+      transform: translate3d(0px, 0px, 0px); /* 초기 위치 */
+      transition: transform 1s ease; /* 부드러운 애니메이션 (1초로 변경) */
+    }
+
+    /* Mobile design 텍스트 스타일 */
+    .mobile-design {
+      position: fixed;
+      left: 211px; /* 왼쪽으로 20px 이동 */
+      top: 257px; /* 위로 10px 이동 */
+      font-family: "Arial", sans-serif; /* 고딕계열 */
+      font-weight: bold; /* 볼드체 */
+      font-size: 26pt; /* 글자 크기 26pt */
+      color: black; /* 검은색 */
+      opacity: 0; /* 기본적으로 숨기기 */
+      transition: opacity 0.5s ease; /* 부드럽게 나타나게 */
+      cursor: pointer; /* 클릭할 수 있도록 커서 변경 */
+    }
+
+    /* Capstone design 텍스트 스타일 */
+    .capstone-design {
+      position: fixed;
+      left: 620px; /* x축 위치 */
+      top: 580px; /* y축 위치 */
+      font-family: "Arial", sans-serif; /* 고딕계열 */
+      font-weight: bold; /* 볼드체 */
+      font-size: 26pt; /* 글자 크기 26pt */
+      color: black; /* 검은색 */
+      opacity: 0; /* 기본적으로 숨기기 */
+      transition: opacity 0.5s ease; /* 부드럽게 나타나게 */
+      cursor: pointer; /* 클릭할 수 있도록 커서 변경 */
+    }
+
+    /* Editorial design 텍스트 스타일 */
+    .editorial-design {
+      position: fixed;
+      left: 1030px; /* x축 위치 */
+      top: 440px; /* y축 위치 */
+      font-family: "Arial", sans-serif; /* 고딕계열 */
+      font-weight: bold; /* 볼드체 */
+      font-size: 26pt; /* 글자 크기 26pt */
+      color: black; /* 검은색 */
+      opacity: 0; /* 기본적으로 숨기기 */
+      transition: opacity 0.5s ease; /* 부드럽게 나타나게 */
+      cursor: pointer; /* 클릭할 수 있도록 커서 변경 */
+    }
+
+    /* Video editing design 텍스트 스타일 */
+    .video-editing-design {
+      position: fixed;
+      left: 1520px; /* x축 위치 */
+      top: 800px; /* y축 위치 */
+      font-family: "Arial", sans-serif; /* 고딕계열 */
+      font-weight: bold; /* 볼드체 */
+      font-size: 26pt; /* 글자 크기 26pt */
+      color: black; /* 검은색 */
+      opacity: 0; /* 기본적으로 숨기기 */
+      transition: opacity 0.5s ease; /* 부드럽게 나타나게 */
+      cursor: pointer; /* 클릭할 수 있도록 커서 변경 */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p class="text">
+      <span data-speed="6" data-transform="translate3d(-150px, 0px, 0px)">Bringing ideas</span>
+      <span data-speed="-4" data-transform="translate3d(120px, 0px, 0px)">to life through</span>
+      <span data-speed="3" data-transform="translate3d(-100px, 0px, 0px)">visual storytelling.</span> <!-- X축을 -100px로 변경 -->
+    </p>
+    <!-- Mobile design 텍스트 추가 -->
+    <div class="mobile-design" id="mobileDesign">Mobile design</div>
+    <!-- Capstone design 텍스트 추가 -->
+    <div class="capstone-design" id="capstoneDesign">Capstone design</div>
+    <!-- Editorial design 텍스트 추가 -->
+    <div class="editorial-design" id="editorialDesign">Editorial design</div>
+    <!-- Video editing design 텍스트 추가 -->
+    <div class="video-editing-design" id="videoEditingDesign">Video editing design</div>
+  </div>
+
+  <script>
+    // 스크롤 이벤트에 따라 애니메이션 처리
+    document.addEventListener("scroll", () => {
+      const spans = document.querySelectorAll(".text span");
+      const scrollY = window.scrollY; // 스크롤 위치
+      const mobileDesign = document.querySelector(".mobile-design");
+      const capstoneDesign = document.querySelector(".capstone-design");
+      const editorialDesign = document.querySelector(".editorial-design");
+      const videoEditingDesign = document.querySelector(".video-editing-design");
+
+      spans.forEach(span => {
+        const speed = parseFloat(span.getAttribute("data-speed")); // 속도 가져오기
+        const transform = span.getAttribute("data-transform"); // 변환값 가져오기
+
+        if (scrollY > 0) {
+          // 스크롤을 내릴 때
+          span.style.transform = `translate3d(${speed * scrollY}px, 0px, 0px)`;
+        } else {
+          // 스크롤을 올릴 때
+          span.style.transform = "translate3d(0px, 0px, 0px)";
+        }
+      });
+
+      // 스크롤이 맨 아래에 도달했을 때만 Mobile design, Capstone design, Editorial design, Video editing design 텍스트 보이기
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        mobileDesign.style.opacity = 1; // 맨 아래에 도달하면 보이게
+        capstoneDesign.style.opacity = 1; // 맨 아래에 도달하면 보이게
+        editorialDesign.style.opacity = 1; // 맨 아래에 도달하면 보이게
+        videoEditingDesign.style.opacity = 1; // 맨 아래에 도달하면 보이게
+      } else {
+        mobileDesign.style.opacity = 0; // 그 외에는 숨기기
+        capstoneDesign.style.opacity = 0; // 그 외에는 숨기기
+        editorialDesign.style.opacity = 0; // 그 외에는 숨기기
+        videoEditingDesign.style.opacity = 0; // 그 외에는 숨기기
+      }
+    });
+
+    // Mobile design 클릭 시 다른 페이지로 이동
+    document.getElementById("mobileDesign").addEventListener("click", function() {
+      window.location.href = "https://www.example.com"; // 다른 페이지로 이동 (링크 수정)
+    });
+
+    // Capstone design 클릭 시 다른 페이지로 이동
+    document.getElementById("capstoneDesign").addEventListener("click", function() {
+      window.location.href = "https://www.example.com"; // 다른 페이지로 이동 (링크 수정)
+    });
+
+    // Editorial design 클릭 시 다른 페이지로 이동
+    document.getElementById("editorialDesign").addEventListener("click", function() {
+      window.location.href = "https://www.example.com"; // 다른 페이지로 이동 (링크 수정)
+    });
+
+    // Video editing design 클릭 시 다른 페이지로 이동
+    document.getElementById("videoEditingDesign").addEventListener("click", function() {
+      window.location.href = "https://www.example.com"; // 다른 페이지로 이동 (링크 수정)
+    });
+  </script>
+</body>
+</html>
